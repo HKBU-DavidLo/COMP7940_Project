@@ -6,7 +6,7 @@ import redis
 
 from argparse import ArgumentParser
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, jsonify
 from linebot import (
     LineBotApi, WebhookParser
 )
@@ -52,67 +52,30 @@ def callback():
         events = parser.parse(body, signature)
     except InvalidSignatureError:
         abort(400)
-
-    # if event is MessageEvent and message is TextMessage, then echo text
-    for event in events:
-        if not isinstance(event, MessageEvent):
-            continue
-        if isinstance(event.message, TextMessage):
-            handle_TextMessage(event)
-        if isinstance(event.message, ImageMessage):
-            handle_ImageMessage(event)
-        if isinstance(event.message, VideoMessage):
-            handle_VideoMessage(event)
-        if isinstance(event.message, FileMessage):
-            handle_FileMessage(event)
-        if isinstance(event.message, StickerMessage):
-            handle_StickerMessage(event)
-
-        if not isinstance(event, MessageEvent):
-            continue
-        if not isinstance(event.message, TextMessage):
-            continue
-
     return 'OK'
 
-# Handler function for Text Message
-def handle_TextMessage(event):
-    print(event.message.text)
-    msg = 'You said: "' + event.message.text + '" '
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(msg)
-    )
 
-# Handler function for Sticker Message
-def handle_StickerMessage(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        StickerSendMessage(
-            package_id=event.message.package_id,
-            sticker_id=event.message.sticker_id)
-    )
 
-# Handler function for Image Message
-def handle_ImageMessage(event):
-    line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice image!")
-    )
 
-# Handler function for Video Message
-def handle_VideoMessage(event):
-    line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice video!")
-    )
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    input_text = event.message.text
 
-# Handler function for File Message
-def handle_FileMessage(event):
-    line_bot_api.reply_message(
-	event.reply_token,
-	TextSendMessage(text="Nice file!")
-    )
+    if input_text == '@查詢匯率':
+        resp = requests.get('https://tw.rter.info/capi.php')
+        currency_data = resp.json()
+        usd_to_twd = currency_data['USDTWD']['Exrate']
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=f'美元 USD 對台幣 TWD：1:{usd_to_twd}'))
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
