@@ -22,8 +22,10 @@ from linebot.utils import PY3
 app = Flask(__name__)
 
 # get channel_secret and channel_access_token from your environment variable
-channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
-channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+#channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
+channel_secret = '1c01eba44f0ffee12712fe6d0a7bb44d'
+#channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None)
+channel_access_token = '/wPAzNy465hRiyutama8qfwLyGpddp/QG2rrmjFUpEE1pt4TW6QoYD1HbfQJt7CKo7/O7begHwVPL6CX+w9LnJB3Z3Lo3WCsXenHL9xCxH+8xNupkoE0j6SAWiEDqaAwDWOCs7sP8yA1Vo8yz6ZkHgdB04t89/1O/w1cDnyilFU='
 
 # obtain the port that heroku assigned to this app.
 heroku_port = os.getenv('PORT', None)
