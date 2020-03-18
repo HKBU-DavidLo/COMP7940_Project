@@ -1,1 +1,2 @@
-web: python assignment3.py
+web: gunicorn app_run:app --preload
+clock: python clock.py
