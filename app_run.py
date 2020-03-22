@@ -7,6 +7,8 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 import configparser
 
+from customer_models import utils, ChannelTalks #, ChannelFlex
+
 app = Flask(__name__)
 
 # get LINE tokens from config.ini
@@ -34,11 +36,21 @@ def callback():
 
 # repeat text message
 @handler.add(MessageEvent, message=TextMessage)
-def echo(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text)
-    )
+# list out all reply options:
+def reply_text_message(event):
+    if event.source.user_id != "Udeadbeefdfeadfsdlkfdasofjewa":
+        reply = False #not yet replied
+
+        #trying reply by condition:
+        if not reply:
+            reply = ChannelTalks.location_search(event)
+        #***
+        #To add other reply options
+        #***
+        #finally, if not get replied yet:
+        if not reply:
+            reply = ChannelTalks.echo(event)
+
 
 if __name__ == "__main__":
     app.run()
