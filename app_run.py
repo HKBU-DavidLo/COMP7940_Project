@@ -7,7 +7,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 import configparser
 
-from customer_models import utils, ChannelTalks #, ChannelFlex
+from custom_models import ChannelTalks #, ChannelFlex, utils
 
 app = Flask(__name__)
 
