@@ -3,7 +3,7 @@ import os
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.modles import MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, LocationMessage, LocationSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageSendMessage, LocationMessage, LocationSendMessage
 
 import configparser
 
