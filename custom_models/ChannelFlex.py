@@ -204,7 +204,7 @@ def keyword_flex(event):
     if re.match("information", event.message.text.lower()):
         
         try:
-            message = FlexSendMessage(alt_text="hello", contents=carousel_flex)
+            message = FlexSendMessage(alt_text="Carousel Checklist", contents=carousel_flex)
             line_bot_api.reply_message(
                 event.reply_token,
                 message
