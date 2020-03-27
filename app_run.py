@@ -7,7 +7,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 import configparser
 
-from custom_models import ChannelTalks #, ChannelFlex, utils
+from custom_models import ChannelTalks, ChannelFlex #, utils
 
 app = Flask(__name__)
 
@@ -44,6 +44,8 @@ def reply_text_message(event):
         #trying reply by condition:
         if not reply:
             reply = ChannelTalks.location_search(event)
+        if not reply:
+            reply = ChannelFlex.keyword_flex(event)
         #***
         #To add other reply options
         #***
