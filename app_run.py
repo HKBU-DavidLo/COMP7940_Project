@@ -49,13 +49,14 @@ def callback():
 def reply_text_message(event):
     print(event)
     text = event.message.text
-
-    if (text == "symptoms of COVID-19" or text == "symptoms"):
+    
+    if (re.findall("(symptom)", text, re.I)):
         reply_text = redis1.get("symptoms").decode('UTF-8')
-    elif (text == "protection" or text == "precaution"):
+    elif (re.findall("(protection)", text, re.I) or re.findall("(precaution)", text, re.I)):
         reply_text = redis1.get("protection").decode('UTF-8')
-    elif (text == "risk factors"):
+    elif (re.findall("(risk)", text, re.I) or re.findall("(factor)", text, re.I)):
         reply_text = redis1.get("risk factors").decode('UTF-8')
+    
     elif (event.source.user_id != "Udeadbeefdfeadfsdlkfdasofjewa"):
         reply = False #not yet replied
 
