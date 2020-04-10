@@ -46,3 +46,4 @@ def setup_redis():
     CallRedis.update_redis_record("Hospitalised", 661)
     CallRedis.update_redis_record("Death", 4)
     reply = "Redis records added"
+    return reply
