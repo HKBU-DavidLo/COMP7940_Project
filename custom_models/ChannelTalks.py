@@ -9,7 +9,7 @@ import configparser
 
 #import random
 
-from custom_models import CallDatabase #, utils
+from custom_models import CallDatabase, utils
 
 # get LINE tokens from config.ini
 config = configparser.ConfigParser()
@@ -17,12 +17,13 @@ config.read('config.ini')
 
 line_bot_api = LineBotApi(config.get('line-bot', 'channel_access_token'))
 
-def echo(event):
+
+def defaul_reply(event):
+    reply = "Sorry, no meaningful reply is available."
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
+        TextSendMessage(text=reply)
     )
-    return True
 
 def location_search(event):
     #Text Message should start from 'location of' and followed by the name of the hospital
@@ -62,3 +63,34 @@ def location_search(event):
     else:
         return False
 
+
+def epicdemic_record(event):
+    try:
+        reply = utils.prepare_redis_record()
+        
+    except:
+        reply = str(event.message.text) + " : failed to access database"
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text= reply)
+    )
+    return True
+
+def scrape_manual(event):
+    scrape_success = util.prepare_scrape()
+    return epicdemic_record(event)
+
+
+# initial input data to Redis
+def setupRedis(event):
+    try:
+        reply = utils.setup_redis()
+    except:
+        reply = "Cannot set up redis"
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text= reply)
+    )
+    return True
+
+    
