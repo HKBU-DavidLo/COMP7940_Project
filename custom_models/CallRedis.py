@@ -21,12 +21,4 @@ def getHKCovidNum(key):
 
 def update_redis_record(key, value):
     r.set(key, value)
-    r.set("last update", int(time.time())
-
-
-    
-
-
-    
-
-    
+    r.set("last update", int(time.time()))
