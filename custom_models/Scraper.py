@@ -19,10 +19,10 @@ def scrapeDataset():
 
 
     elements = driver.find_elements_by_tag_name('text')
-    confirmed = int(elements[1].text.strip())
-    discharged = int(elements[4].text.strip())
-    hospitalised = int(elements[7].text.strip())
-    death = int(elements[13].text.strip())
+    confirmed = elements[1].text.strip()
+    discharged = elements[4].text.strip()
+    hospitalised = elements[7].text.strip()
+    death = elements[13].text.strip()
     
     driver.quit()
     return (confirmed, discharged, hospitalised, death)
