@@ -46,7 +46,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 # list out all reply options:
 def reply_text_message(event):
-    
+    print(event)
+    text = event.message.text
     if (re.findall("(symptom)", text, re.I)):
         reply_text = redis1.get("symptoms").decode('UTF-8')
     elif (re.findall("(protection)", text, re.I) or re.findall("(precaution)", text, re.I)):
