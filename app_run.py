@@ -63,11 +63,11 @@ def reply_text_message(event):
 
         #manually update redis database from scraping
         if re.match('manual scrape', str(event.message.text).lower().strip()):
-            reply = ChannelTalks.scrape_manual(event).decode('gbk')
+            reply = ChannelTalks.scrape_manual(event).decode('big5')
 
         #query key pandemic statistics in HK
         if re.match('number of cases', str(event.message.text).lower().strip()):
-            reply = ChannelTalks.epicdemic_record(event).decode('gbk')
+            reply = ChannelTalks.epicdemic_record(event).decode('big5')
             
         #trying reply by condition:
         if not reply:
