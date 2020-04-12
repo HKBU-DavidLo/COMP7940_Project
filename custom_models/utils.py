@@ -34,10 +34,10 @@ def prepare_redis_record():
 
 def prepare_scrape():
     (confirmed, discharged, hospital, death) = Scraper.scrapeDataset()
-    CallRedis.update_redis_record("Confirmed", confirmed)
-    CallRedis.update_redis_record("Discharged", discharged)
-    CallRedis.update_redis_record("Hospitalised", hospital)
-    CallRedis.update_redis_record("Death", death)
+    CallRedis.update_redis_record("Confirmed", confirmed).decode('UTF-8')
+    CallRedis.update_redis_record("Discharged", discharged).decode('UTF-8')
+    CallRedis.update_redis_record("Hospitalised", hospital).decode('UTF-8')
+    CallRedis.update_redis_record("Death", death).decode('UTF-8')
     return True    
         
 def setup_redis():
