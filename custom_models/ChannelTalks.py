@@ -66,7 +66,7 @@ def location_search(event):
 
 def epicdemic_record(event):
     try:
-        reply = utils.prepare_redis_record().decode('UTF-8')
+        reply = utils.prepare_redis_record()
         
     except:
         reply = str(event.message.text) + " : failed to access database"
