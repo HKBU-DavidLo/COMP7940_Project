@@ -10,10 +10,10 @@ def prepare_redis_record():
         latest_rec_time = CallRedis.getLatestRecTime()
         SHORTEST_UPDATE_TIME = 28800 # 8 hours for avoiding frequent scraping
         # obtain value from Redis database
-        confirmed = CallRedis.getHKCovidNum("Confirmed")
-        discharged = CallRedis.getHKCovidNum("Discharged")
-        hospital = CallRedis.getHKCovidNum("Hospitalised")
-        death = CallRedis.getHKCovidNum("Death")
+        confirmed = CallRedis.getHKCovidNum("Confirmed").decode('UTF-8')
+        discharged = CallRedis.getHKCovidNum("Discharged").decode('UTF-8')
+        hospital = CallRedis.getHKCovidNum("Hospitalised").decode('UTF-8')
+        death = CallRedis.getHKCovidNum("Death").decode('UTF-8')
         scraped = False
         if (int(time.time()) - latest_rec_time > SHORTEST_UPDATE_TIME):
              #update values in Redis database if data is more than SHORTEST_UPDATE_TIME old
@@ -34,10 +34,10 @@ def prepare_redis_record():
 
 def prepare_scrape():
     (confirmed, discharged, hospital, death) = Scraper.scrapeDataset()
-    CallRedis.update_redis_record("Confirmed", confirmed).decode('UTF-8')
-    CallRedis.update_redis_record("Discharged", discharged).decode('UTF-8')
-    CallRedis.update_redis_record("Hospitalised", hospital).decode('UTF-8')
-    CallRedis.update_redis_record("Death", death).decode('UTF-8')
+    CallRedis.update_redis_record("Confirmed", confirmed)
+    CallRedis.update_redis_record("Discharged", discharged)
+    CallRedis.update_redis_record("Hospitalised", hospital)
+    CallRedis.update_redis_record("Death", death)
     return True    
         
 def setup_redis():
