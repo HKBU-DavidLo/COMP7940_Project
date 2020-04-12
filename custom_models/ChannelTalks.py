@@ -78,7 +78,7 @@ def epicdemic_record(event):
 
 def scrape_manual(event):
     scrape_success = utils.prepare_scrape().decode('UTF-8')
-    return epicdemic_record(event.decode('UTF-8'))
+    return epicdemic_record(event)
 
 
 # initial input data to Redis
