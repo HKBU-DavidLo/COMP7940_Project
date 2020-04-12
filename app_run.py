@@ -1,13 +1,21 @@
 from __future__ import unicode_literals
 import os
+import redis
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from urllib.request import urlopen
 import re
 import configparser
+from linebot.models import *
 
 from custom_models import ChannelTalks, ChannelFlex #, utils
+
+redis1 = redis.Redis(host = "redis-13333.c56.east-us.azure.cloud.redislabs.com", password = "ubZLeDUxIKCYKBHK15dtY3TjfnmPw824", port = "13333")
+redis1.set("symptoms","Fever,Cough,Shortness of breath or difficulty breathing,Tiredness,Aches,Runny nose and Sore throat.")
+redis1.set("protection","1,clean your hands for at least 20 seconds with soap and water, or use an alcohol-based sanitiser with at least 70% alcohol.2,cover your sneeze or cough with your elbow or with tissue.3,avoid close contact with people who are ill.4,avoid touching your eyes, nose and mouth.")
+redis1.set("risk factors","1,Recent travel from or residence in an area with ongoing community spread of COVID-19 as determined by CDC or WHO.2,Close contact with someone who has COVID-19 — such as when a family member or health care worker takes care of an infected person.")
 
 app = Flask(__name__)
 
@@ -38,7 +46,15 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 # list out all reply options:
 def reply_text_message(event):
-    if event.source.user_id != "Udeadbeefdfeadfsdlkfdasofjewa":
+    
+    if (re.findall("(symptom)", text, re.I)):
+        reply_text = redis1.get("symptoms").decode('UTF-8')
+    elif (re.findall("(protection)", text, re.I) or re.findall("(precaution)", text, re.I)):
+        reply_text = redis1.get("protection").decode('UTF-8')
+    elif (re.findall("(risk)", text, re.I) or re.findall("(factor)", text, re.I)):
+        reply_text = redis1.get("risk factors").decode('UTF-8')
+    
+    elif event.source.user_id != "Udeadbeefdfeadfsdlkfdasofjewa":
         reply = False #not yet replied
         #manually input first data in Redis
         if re.match('set up redis', str(event.message.text).lower().strip()):
@@ -67,7 +83,9 @@ def reply_text_message(event):
         #finally, if not get replied yet:
         if not reply:
             reply = ChannelTalks.default_reply(event)
-
+    message = TextSendMessage(reply_text)
+    line_bot_api.reply_message(event.reply_token, message)
 
 if __name__ == "__main__":
-    app.run()
+    heroku_port = os.getenv('PORT', None)
+    app.run(host='0.0.0.0', port=heroku_port)
