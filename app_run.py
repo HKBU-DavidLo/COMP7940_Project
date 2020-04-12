@@ -58,8 +58,8 @@ def reply_text_message(event):
     elif event.source.user_id != "Udeadbeefdfeadfsdlkfdasofjewa":
         reply = False #not yet replied
         #manually input first data in Redis
-#         if re.match('set up redis', str(event.message.text).lower().strip()):
-#             reply = ChannelTalks.setupRedis(event)
+        if re.match('set up redis', str(event.message.text).lower().strip()):
+            reply = ChannelTalks.setupRedis(event)
 
         #manually update redis database from scraping
         if re.match('manual scrape', str(event.message.text).lower().strip()):
