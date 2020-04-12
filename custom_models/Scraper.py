@@ -15,7 +15,7 @@ def scrapeDataset():
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     
     driver.get(URL)
-    time.sleep(5)
+    time.sleep(1)
 
 
     elements = driver.find_elements_by_tag_name('text')
