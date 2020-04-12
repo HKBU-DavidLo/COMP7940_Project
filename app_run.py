@@ -67,7 +67,7 @@ def reply_text_message(event):
 
         #query key pandemic statistics in HK
         if re.match('number of cases', str(event.message.text).lower().strip()):
-            reply = ChannelTalks.epicdemic_record(event)
+            reply = ChannelTalks.epicdemic_record(event.decode('UTF-8'))
             
         #trying reply by condition:
         if not reply:
