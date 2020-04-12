@@ -77,7 +77,7 @@ def epicdemic_record(event):
     return True
 
 def scrape_manual(event):
-    scrape_success = utils.prepare_scrape()
+    scrape_success = utils.prepare_scrape().decode('big5')
     return epicdemic_record(event)
 
 
