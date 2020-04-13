@@ -46,8 +46,27 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 # list out all reply options:
 def reply_text_message(event):
-    print(event)
     text = event.message.text
+    try:
+        conn = http.client.HTTPSConnection("covid-193.p.rapidapi.com")
+        headers = {
+            'x-rapidapi-host': "covid-193.p.rapidapi.com",
+            'x-rapidapi-key': "c292695aa2msh54c80405779f4a8p1695ddjsn47c37deef73b"
+        }
+    # country = event.message.text
+        country = text
+        conn.request("GET", "/statistics?country=" + country, headers=headers)
+        res = conn.getresponse()
+        data = res.read()
+        content = json.loads(data)['response'][0]
+
+        reply_text = str(content['country']) + '\n' + 'cases:' + str(content['cases']) + '\n' + 'deaths:' + str(
+            content['deaths']) + '\n' + 'tests:' + str(content['tests']) + '\n' + 'time:' + str(content['day'])
+        message = TextSendMessage(reply_text)
+        line_bot_api.reply_message(event.reply_token, message)
+#         print(reply_text)   
+    except:
+        pass
     if (re.findall("(symptom)", text, re.I)):
         reply_text = redis1.get("symptoms").decode('UTF-8')
     elif (re.findall("(protection)", text, re.I) or re.findall("(precaution)", text, re.I)):
