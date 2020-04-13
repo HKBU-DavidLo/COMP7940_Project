@@ -10,6 +10,9 @@ import re
 import configparser
 from linebot.models import *
 
+import http.client
+import json
+
 from custom_models import ChannelTalks, ChannelFlex #, utils
 
 redis1 = redis.Redis(host = "redis-13333.c56.east-us.azure.cloud.redislabs.com", password = "ubZLeDUxIKCYKBHK15dtY3TjfnmPw824", port = "13333")
